@@ -4,5 +4,8 @@
         <file>qml/MainScreen.qml</file>
         <file>qml/ClusterSelectionScreen.qml</file>
         <file>qml/ClusterInstancesScreen.qml</file>
+        <file>qml/screens/ScreenItem.qml</file>
+        <file>qml/screens/ScreenManager.qml</file>
+        <file>qml/InstanceDelegate.qml</file>
     </qresource>
 </RCC>

@@ -12,7 +12,8 @@ class ClusterLogic : public QObject
     Q_OBJECT
     LIST_PROPERTY(ClusterModel, models)
     LIST_PROPERTY(InstanceModel, instances)
-    //TODO: Osobna logika
+
+    AUTO_PROPERTY_D(bool, requestPending, false)
 
 public:
     explicit ClusterLogic(QObject *parent = 0);
@@ -24,6 +25,12 @@ signals:
 
 public slots:
     void onClusterInstancesListLoaded(InstancesListData data);
+
+
+private:
+    Q_SLOT void onRequestStarted();
+
+    ClusterModel* createModel(QString name, QString address);
 };
 
 #endif // CLUSTERLOGIC_H

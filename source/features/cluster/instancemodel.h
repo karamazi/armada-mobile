@@ -10,6 +10,8 @@ class InstanceModel : public QObject
     AUTO_PROPERTY(QString, id)
     AUTO_PROPERTY(QString, name)
     AUTO_PROPERTY(QString, status)
+    AUTO_PROPERTY(QString, env)
+    AUTO_PROPERTY(QString, appId)
 
 public:
     explicit InstanceModel(QObject *parent = 0);

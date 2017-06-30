@@ -16,6 +16,10 @@ InstancesListData InstancesListData::fromJson(QJsonArray json)
         instanceData.microserviceId = instanceObject["microservice_id"].toString();
         instanceData.microserviceName = instanceObject["name"].toString();
         instanceData.status = instanceObject["status"].toString();
+
+        QJsonObject tagsObject = instanceObject["tags"].toObject();
+        instanceData.env = tagsObject["env"].toString();
+        instanceData.appId = tagsObject["app_id"].toString();
         data.instances.append(instanceData);
     }
 

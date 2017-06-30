@@ -46,3 +46,6 @@ HEADERS += \
     source/sharedStructs/instanceslistdata.h \
     source/sharedStructs/instancedata.h \
     source/features/cluster/instancemodel.h
+
+DISTFILES += \
+    readme.md

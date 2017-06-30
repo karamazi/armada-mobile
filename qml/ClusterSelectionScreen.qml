@@ -1,6 +1,8 @@
 import QtQuick 2.0
+import "screens"
+import QtGraphicalEffects 1.0
 
-Item {
+ScreenItem {
     id: clusterSelection
     property var clusterLogic
 
@@ -15,6 +17,7 @@ Item {
 
         font.pixelSize: parent.height * 0.05
         text: "Select a cluster"
+        color: "white"
     }
 
     Column {
@@ -65,9 +68,39 @@ Item {
     }
 
     Image {
+        id: loadingSpinner
+        source: "../assets/loading_icon.png"
+        anchors.centerIn: parent
+        visible: clusterSelection.clusterLogic.requestPending;
+        RotationAnimation {
+            running: loadingSpinner.visible
+            target: loadingSpinner
+            from: 0
+            to: 360
+            duration: 300
+            loops: Animation.Infinite
+        }
+    }
+
+    Image {
+        id: armadaLogo
         source: "../assets/armada.png"
+        width: parent.width * 0.9
+        height: width * 0.25
         anchors.bottom: parent.bottom
         anchors.bottomMargin: parent.height * 0.025
         anchors.horizontalCenter: parent.horizontalCenter
     }
+
+    RadialGradient {
+        anchors.fill: armadaLogo
+        source: armadaLogo
+        gradient: Gradient {
+            GradientStop { position: 0.0; color: "#BBB" }
+            GradientStop { position: 1.0; color: "#0570B8" }
+        }
+
+    }
+
+
 }

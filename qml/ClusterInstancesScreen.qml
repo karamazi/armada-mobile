@@ -1,7 +1,9 @@
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
+import QtQuick.Controls 2.1
+import "screens"
 
-Item {
+ScreenItem {
     id: instancesScreen
     property var instancesLogic
 
@@ -16,8 +18,8 @@ Item {
         LinearGradient {
             anchors.fill: parent
             gradient: Gradient {
-                GradientStop { position: 0.0; color: "white" }
-                GradientStop { position: 0.9; color: "white" }
+                GradientStop { position: 0.0; color: "#0570B8" }
+                GradientStop { position: 0.9; color: "#0570B8" }
                 GradientStop { position: 1.0; color: "transparent" }
             }
         }
@@ -46,54 +48,29 @@ Item {
 
         snapMode: ListView.SnapToItem
         boundsBehavior: ListView.StopAtBounds
+        ScrollBar.vertical: ScrollBar {
+            id: scrollBar
+            policy: ScrollBar.AsNeeded
+            background: Rectangle {
+                color: "transparent"
+            }
+            contentItem: Rectangle {
+                implicitWidth: 10
+                implicitHeight: 25
+                radius: width / 2
+                color: scrollBar.pressed ? "gray" : "#eed"
+                opacity: scrollBar.active ? 1 : 0
+                Behavior on opacity {
+                    NumberAnimation { duration : 250 }
+                }
+            }
+        }
 
         model: instancesLogic.instances
-        delegate: Rectangle {
-            property var model: modelData
-            Rectangle {
-                width: parent.width
-                height: 1
-                color: "black"
-            }
-
+        delegate: InstanceDelegate {
+            model: modelData
             width: instancesScreen.width
             height: instancesScreen.height * 0.075
-            color: {
-                if(model.status === "passing"){
-                    return "lightgreen"
-                }else if(model.status === "warning"){
-                    return "khaki"
-                }else if(model.status === "critical"){
-                    return "red"
-                }
-                return "gray";
-            }
-            Item {
-                id: textContainer
-                width: parent.width * 0.95
-                height: parent.height
-                anchors.horizontalCenter: parent.horizontalCenter
-
-                Text {
-                    id: nameText
-                    text: model.name
-                    font.pixelSize: parent.height * 0.4
-                    anchors {
-                        left: parent.left
-                        bottom: parent.verticalCenter
-                    }
-                }
-
-                Text {
-                    text: model.id
-                    font.pixelSize: parent.height * 0.2
-                    anchors {
-                        left: parent.left
-                        top: nameText.bottom
-                    }
-                }
-            }
-
         }
     }
 }

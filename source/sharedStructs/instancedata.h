@@ -6,6 +6,8 @@ struct InstanceData {
     QString microserviceName;
     QString microserviceId;
     QString status;
+    QString env;
+    QString appId;
 };
 
 #endif // INSTANCEDATA_H

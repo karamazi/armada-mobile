@@ -2,17 +2,9 @@
 
 ClusterLogic::ClusterLogic(QObject *parent) : QObject(parent)
 {
-    ClusterModel* m;
     QList<ClusterModel*> initialModels;
-
-    m = new ClusterModel("Arena", "http://arena.gd:8900", this);
-    connect(m, SIGNAL(clusterInstancesListRequested(QString)), this, SIGNAL(clusterInstancesListRequested(QString)));
-    initialModels.append(m);
-
-    m = new ClusterModel("Office", "http://office.gd:8900", this);
-    connect(m, SIGNAL(clusterInstancesListRequested(QString)), this, SIGNAL(clusterInstancesListRequested(QString)));
-    initialModels.append(m);
-
+    initialModels.append(createModel("Arena", "http://arena.gd:8900"));
+    initialModels.append(createModel("Office", "http://office.gd:8900"));
     models(initialModels);
 }
 
@@ -22,12 +14,15 @@ void ClusterLogic::onClusterInstancesListLoaded(InstancesListData data)
     //TODO Free memory
     QList<InstanceModel*> newInstances;
     InstanceModel* m;
+
     for(InstanceData i : data.instances)
     {
         m = new InstanceModel(this);
         m->name(i.microserviceName);
         m->id(i.microserviceId);
         m->status(i.status);
+        m->env(i.env);
+        m->appId(i.appId);
         newInstances.append(m);
     }
     std::sort(newInstances.begin(), newInstances.end(),
@@ -35,6 +30,21 @@ void ClusterLogic::onClusterInstancesListLoaded(InstancesListData data)
               -> bool { return a->name() < b->name(); }
     );
     instances(newInstances);
-
     emit qmlInstancesLoaded();
+    requestPending(false);
+}
+
+
+/* Private */
+
+void ClusterLogic::onRequestStarted()
+{
+    requestPending(true);
+}
+
+ClusterModel* ClusterLogic::createModel(QString name, QString address){
+    ClusterModel* m = new ClusterModel(name, address, this);
+    connect(m, SIGNAL(clusterInstancesListRequested(QString)), this, SIGNAL(clusterInstancesListRequested(QString)));
+    connect(m, SIGNAL(clusterInstancesListRequested(QString)), this, SLOT(onRequestStarted()));
+    return m;
 }
