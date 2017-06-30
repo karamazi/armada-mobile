@@ -1,0 +1,3 @@
+*.pro.user*
+moc_*
+*.DS_Store

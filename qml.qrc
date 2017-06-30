@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/main.qml</file>
+        <file>qml/MainScreen.qml</file>
+        <file>qml/ClusterSelectionScreen.qml</file>
+        <file>qml/ClusterInstancesScreen.qml</file>
+    </qresource>
+</RCC>
