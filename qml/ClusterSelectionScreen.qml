@@ -1,6 +1,9 @@
 import QtQuick 2.0
-import "screens"
 import QtGraphicalEffects 1.0
+
+import "screens"
+import "popups"
+import "common"
 
 ScreenItem {
     id: clusterSelection
@@ -22,33 +25,25 @@ ScreenItem {
 
     Column {
         id: clustersList
+        property real itemHeight: clusterSelection.height * 0.075
+        property real itemWidth: clusterSelection.width * 0.75
         anchors {
             top: headerText.bottom
             topMargin: parent.height * 0.05
-            bottom: parent.bottom
             horizontalCenter: parent.horizontalCenter
         }
         width: parent.width * 0.75
         spacing: parent.height * 0.025
+        height: clusterSelection.clusterLogic.models.length * (itemHeight + spacing)
 
         Repeater {
             model: clusterSelection.clusterLogic.models
-            delegate: Rectangle {
+            delegate: ClickableRect {
                 property var clusterModel: modelData
 
-                width: clustersList.width
-                height: clustersList.height * 0.1
-                color: clickArea.pressed ? "#1594D8" : "#0570B8"
-                border.width: height * 0.05
-                border.color: "#09A4F8"
-                radius: height * 0.25
+                width: clustersList.itemWidth
+                height: clustersList.itemHeight
 
-
-                Behavior on color {
-                    ColorAnimation {
-                        duration: 200
-                    }
-                }
 
                 Text {
                     anchors.centerIn: parent
@@ -58,14 +53,33 @@ ScreenItem {
                     color: "white"
                 }
 
-                MouseArea {
-                    id: clickArea
-                    anchors.fill: parent
-                    onClicked: clusterModel.qmlConnectToCluster(clusterModel.address)
-                }
+                onClicked: clusterModel.qmlConnectToCluster(clusterModel.address)
             }
         }
     }
+
+    ClickableRect {
+        id: addNewButton
+        anchors {
+            top: clustersList.bottom
+            topMargin: parent.height * 0.05
+            horizontalCenter: parent.horizontalCenter
+        }
+        width: parent.width * 0.5
+        height: parent.height * 0.075
+        borderColor: "#09D498"
+
+        Text {
+            anchors.centerIn: parent
+            text: "+ New"
+            font.pixelSize: parent.height * 0.5
+            font.weight: Font.Bold
+            color: "#AFA"
+        }
+        onClicked: editClusterPopup.open();
+
+    }
+
 
     Image {
         id: loadingSpinner
@@ -102,5 +116,8 @@ ScreenItem {
 
     }
 
-
+    EditClusterPopup {
+        id: editClusterPopup
+        clusterLogic: clusterSelection.clusterLogic
+    }
 }

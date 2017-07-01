@@ -7,5 +7,9 @@
         <file>qml/screens/ScreenItem.qml</file>
         <file>qml/screens/ScreenManager.qml</file>
         <file>qml/InstanceDelegate.qml</file>
+        <file>qml/popups/PopupItem.qml</file>
+        <file>qml/popups/ErrorPopup.qml</file>
+        <file>qml/common/ClickableRect.qml</file>
+        <file>qml/popups/EditClusterPopup.qml</file>
     </qresource>
 </RCC>

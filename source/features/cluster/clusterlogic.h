@@ -16,7 +16,7 @@ class ClusterLogic : public QObject
     AUTO_PROPERTY_D(bool, requestPending, false)
 public:
     explicit ClusterLogic(QObject *parent = 0);
-
+    Q_INVOKABLE void qmlAddCluster(QString name, QString address);
 
 signals:
     void clusterInstancesListRequested(QString address);

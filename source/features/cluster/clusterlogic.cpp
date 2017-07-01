@@ -41,6 +41,12 @@ void ClusterLogic::onClusterRequestError(QString error)
 }
 
 
+void ClusterLogic::qmlAddCluster(QString name, QString address){
+    QList<ClusterModel*> prev = modelsRaw();
+    prev.append(createModel(name, address));
+    models(prev);
+}
+
 /* Private */
 
 void ClusterLogic::onRequestStarted()
