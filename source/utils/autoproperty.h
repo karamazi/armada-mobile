@@ -9,6 +9,7 @@
 
 // based on
 // https://gist.github.com/Rolias/48d453a0490d36090193
+#define QML_SIGNALS
 
 #define AUTO_PROPERTY(TYPE, NAME) \
     Q_PROPERTY(TYPE NAME READ NAME WRITE NAME NOTIFY NAME ## Changed ) \

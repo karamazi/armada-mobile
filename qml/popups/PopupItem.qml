@@ -11,7 +11,7 @@ Rectangle {
     signal closed
 
     property alias contentItem: contentLoader.sourceComponent
-
+    property bool closeOnClick: true
 
     function open(){
         popupItem.opened()
@@ -24,7 +24,10 @@ Rectangle {
 
     MouseArea {
         anchors.fill: parent
-        onClicked: popupItem.close()
+        onClicked: {
+            if(closeOnClick)
+                popupItem.close()
+        }
     }
 
     Rectangle {

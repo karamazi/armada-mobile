@@ -6,6 +6,8 @@ import "../common"
 PopupItem {
     id: editClusterPopup
     property var clusterLogic
+    closeOnClick: false
+
     contentItem: Item {
         Text {
             id: headerText
@@ -62,10 +64,11 @@ PopupItem {
             id: acceptButton
             width: parent.width * 0.4
             height: parent.height * 0.15
+            borderColor: "#AFA"
 
             Text {
                 text: "Accept"
-                color: "#AFA"
+                color: acceptButton.borderColor
                 font.pixelSize: parent.height * 0.6
                 anchors.centerIn: parent
             }
@@ -97,10 +100,11 @@ PopupItem {
             id: closeButton
             width: parent.width * 0.4
             height: parent.height * 0.15
+            borderColor: "#FAA"
 
             Text {
                 text: "Cancel"
-                color: "#FAA"
+                color: closeButton.borderColor
                 font.pixelSize: parent.height * 0.6
                 anchors.centerIn: parent
             }

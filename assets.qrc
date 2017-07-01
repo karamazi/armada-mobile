@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>assets/armada.png</file>
         <file>assets/loading_icon.png</file>
+        <file>assets/error_icon.png</file>
     </qresource>
 </RCC>

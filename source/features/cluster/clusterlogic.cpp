@@ -40,21 +40,45 @@ void ClusterLogic::onClusterRequestError(QString error)
     requestPending(false);
 }
 
-
-void ClusterLogic::qmlAddCluster(QString name, QString address){
+void ClusterLogic::qmlAddCluster(QString name, QString address)
+{
     QList<ClusterModel*> prev = modelsRaw();
     prev.append(createModel(name, address));
     models(prev);
+    saveConfig();
+}
+
+void ClusterLogic::onSavedClustersConfigLoaded(MultipleClustersConfigData data)
+{
+    QList<ClusterModel*> newModels;
+    for(auto clusterConfig : data.clusters)
+    {
+        newModels.append(createModel(clusterConfig.name, clusterConfig.address));
+    }
+    models(newModels);
 }
 
 /* Private */
+
+void ClusterLogic::saveConfig()
+{
+    MultipleClustersConfigData data;
+    for(ClusterModel* m: modelsRaw()){
+        ClusterConfigData ccd;
+        ccd.address = m->address();
+        ccd.name = m->name();
+        data.clusters.append(ccd);
+    }
+    emit saveClustersRequested(data);
+}
 
 void ClusterLogic::onRequestStarted()
 {
     requestPending(true);
 }
 
-ClusterModel* ClusterLogic::createModel(QString name, QString address){
+ClusterModel* ClusterLogic::createModel(QString name, QString address)
+{
     ClusterModel* m = new ClusterModel(name, address, this);
     connect(m, SIGNAL(clusterInstancesListRequested(QString)), this, SIGNAL(clusterInstancesListRequested(QString)));
     connect(m, SIGNAL(clusterInstancesListRequested(QString)), this, SLOT(onRequestStarted()));

@@ -9,7 +9,8 @@ SOURCES += source/main.cpp \
     source/features/cluster/clustermodel.cpp \
     source/dataSources/clusterconnection.cpp \
     source/sharedStructs/instanceslistdata.cpp \
-    source/features/cluster/instancemodel.cpp
+    source/features/cluster/instancemodel.cpp \
+    source/dataSources/offlinestorage.cpp
 
 RESOURCES += qml.qrc \
     assets.qrc
@@ -45,7 +46,9 @@ HEADERS += \
     source/dataSources/clusterconnection.h \
     source/sharedStructs/instanceslistdata.h \
     source/sharedStructs/instancedata.h \
-    source/features/cluster/instancemodel.h
+    source/features/cluster/instancemodel.h \
+    source/sharedStructs/clusterconfigdata.h \
+    source/dataSources/offlinestorage.h
 
 DISTFILES += \
     readme.md

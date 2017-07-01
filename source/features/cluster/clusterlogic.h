@@ -6,6 +6,7 @@
 #include "clustermodel.h"
 #include "instancemodel.h"
 #include "source/sharedStructs/instanceslistdata.h"
+#include "source/sharedStructs/clusterconfigdata.h"
 
 class ClusterLogic : public QObject
 {
@@ -14,21 +15,25 @@ class ClusterLogic : public QObject
     LIST_PROPERTY(InstanceModel, instances)
 
     AUTO_PROPERTY_D(bool, requestPending, false)
+
 public:
     explicit ClusterLogic(QObject *parent = 0);
     Q_INVOKABLE void qmlAddCluster(QString name, QString address);
 
 signals:
     void clusterInstancesListRequested(QString address);
+    void saveClustersRequested(MultipleClustersConfigData data);
+
     void qmlInstancesLoaded();
     void qmlError(QString error);
 
 public slots:
-    void onClusterInstancesListLoaded(InstancesListData data);
-    void onClusterRequestError(QString error);
+    void onClusterInstancesListLoaded(InstancesListData data); void onClusterRequestError(QString error);
+    void onSavedClustersConfigLoaded(MultipleClustersConfigData data);
 
 private:
     Q_SLOT void onRequestStarted();
+    void saveConfig();
 
     ClusterModel* createModel(QString name, QString address);
 };

@@ -6,6 +6,7 @@
 
 #include "features/rootlogic.h"
 #include "dataSources/clusterconnection.h"
+#include "dataSources/offlinestorage.h"
 
 class ArmadaApplication : public QGuiApplication
 {
@@ -17,6 +18,7 @@ private:
     QQmlApplicationEngine* mQmlEngine;
     RootLogic* mRootLogic;
     ClusterConnection* mClusterConnection;
+    OfflineStorage* mOfflineStorage;
 
     void connectComponents();
 };
