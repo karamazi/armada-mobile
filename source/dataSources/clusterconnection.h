@@ -15,6 +15,7 @@ public:
 
 signals:
     void clusterInstancesListLoaded(InstancesListData data);
+    void clusterRequestError(QString error);
 
 public slots:
     void onClusterInstancesListRequested(QString address);

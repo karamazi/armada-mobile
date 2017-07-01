@@ -34,6 +34,12 @@ void ClusterLogic::onClusterInstancesListLoaded(InstancesListData data)
     requestPending(false);
 }
 
+void ClusterLogic::onClusterRequestError(QString error)
+{
+    emit qmlError(error);
+    requestPending(false);
+}
+
 
 /* Private */
 

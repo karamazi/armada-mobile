@@ -14,7 +14,6 @@ class ClusterLogic : public QObject
     LIST_PROPERTY(InstanceModel, instances)
 
     AUTO_PROPERTY_D(bool, requestPending, false)
-
 public:
     explicit ClusterLogic(QObject *parent = 0);
 
@@ -22,10 +21,11 @@ public:
 signals:
     void clusterInstancesListRequested(QString address);
     void qmlInstancesLoaded();
+    void qmlError(QString error);
 
 public slots:
     void onClusterInstancesListLoaded(InstancesListData data);
-
+    void onClusterRequestError(QString error);
 
 private:
     Q_SLOT void onRequestStarted();

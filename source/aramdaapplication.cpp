@@ -25,4 +25,5 @@ void ArmadaApplication::connectComponents()
 {
     connect(mRootLogic->clusterLogic(), SIGNAL(clusterInstancesListRequested(QString)), mClusterConnection, SLOT(onClusterInstancesListRequested(QString)));
     connect(mClusterConnection, SIGNAL(clusterInstancesListLoaded(InstancesListData)), mRootLogic->clusterLogic(), SLOT(onClusterInstancesListLoaded(InstancesListData)));
+    connect(mClusterConnection, SIGNAL(clusterRequestError(QString)), mRootLogic->clusterLogic(), SLOT(onClusterRequestError(QString)));
 }

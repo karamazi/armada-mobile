@@ -28,6 +28,7 @@ void ClusterConnection::replyFinished(QNetworkReply *reply)
     {
         qDebug() << "HttpRequest::ERROR!";
         qDebug() << reply->errorString();
+        emit clusterRequestError(reply->errorString());
     }
     else {
         QByteArray data = reply->readAll();
@@ -42,6 +43,7 @@ void ClusterConnection::replyFinished(QNetworkReply *reply)
             QString error = response["error"].toString();
             qDebug() << "Armada API failed with error:";
             qDebug() << error;
+            emit clusterRequestError(error);
             return; //TODO: emit connection error
         }
         QJsonArray instancesListJson = response["result"].toArray();
