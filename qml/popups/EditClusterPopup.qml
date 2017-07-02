@@ -6,6 +6,9 @@ import "../common"
 PopupItem {
     id: editClusterPopup
     property var clusterLogic
+    property var clusterModel
+    property bool addingNew: true
+
     closeOnClick: false
 
     contentItem: Item {
@@ -18,8 +21,9 @@ PopupItem {
             }
             font.pixelSize: parent.height * 0.05
             color: "white"
-            text: "Edit cluster"
+            text: editClusterPopup.addingNew ? "Add cluster" : "Edit cluster"
         }
+
         Column {
             id: inputs
             anchors {
@@ -33,6 +37,7 @@ PopupItem {
             TextField {
                 id: name
                 placeholderText: "Name"
+                text: clusterModel ? clusterModel.name : ""
                 width: parent.width
                 validator: RegExpValidator { regExp: /^.{3,}$/ }
             }
@@ -40,8 +45,8 @@ PopupItem {
             TextField {
                 id: address
                 placeholderText: "Address"
-                text: "http://"
-                validator: RegExpValidator { regExp: /^https?:\/\/.*/}
+                text: clusterModel ? clusterModel.address : ""
+                validator: RegExpValidator { regExp: /^https?:\/\/.{3,}/}
                 width: parent.width
             }
         }
@@ -60,62 +65,87 @@ PopupItem {
             visible: false
         }
 
-        ClickableRect {
-            id: acceptButton
-            width: parent.width * 0.4
+        Row {
+            width: parent.width * 0.9
             height: parent.height * 0.15
-            borderColor: "#AFA"
-
-            Text {
-                text: "Accept"
-                color: acceptButton.borderColor
-                font.pixelSize: parent.height * 0.6
-                anchors.centerIn: parent
-            }
-
             anchors {
                 bottom: parent.bottom
                 bottomMargin: parent.height * 0.075
-                left: parent.left
-                leftMargin: parent.width * 0.05
+                horizontalCenter: parent.horizontalCenter
             }
-            onClicked: {
-                if(name.acceptableInput && address.acceptableInput){
-                    console.log("OK")
-                    wrongInputText.visible = false;
-                    editClusterPopup.clusterLogic.qmlAddCluster(name.text, address.text)
+            spacing: width * 0.05
+
+            ClickableRect {
+                id: deleteButton
+                width: parent.width * 0.3
+                height: parent.height
+                borderColor: "#F00"
+                normalColor: "#EE3333"
+                pressedColor: "#FF4444"
+                enabled: !editClusterPopup.addingNew
+
+                Text {
+                    text: "Delete"
+                    color: "white"
+                    font.pixelSize: parent.height * 0.6
+                    anchors.centerIn: parent
+                }
+
+                onClicked: {
+                    clusterModel.qmlDelete();
                     editClusterPopup.close()
                 }
-                else {
-                    wrongInputText.visible = true;
-                    console.log("nope")
+            }
+
+            ClickableRect {
+                id: closeButton
+                width: parent.width * 0.3
+                height: parent.height
+                borderColor: "#FAA"
+
+                Text {
+                    text: "Cancel"
+                    color: closeButton.borderColor
+                    font.pixelSize: parent.height * 0.6
+                    anchors.centerIn: parent
                 }
 
-
+                onClicked: editClusterPopup.close()
             }
 
-        }
+            ClickableRect {
+                id: acceptButton
+                width: parent.width * 0.3
+                height: parent.height
+                borderColor: "#AFA"
 
-        ClickableRect {
-            id: closeButton
-            width: parent.width * 0.4
-            height: parent.height * 0.15
-            borderColor: "#FAA"
+                Text {
+                    text: "Accept"
+                    color: acceptButton.borderColor
+                    font.pixelSize: parent.height * 0.6
+                    anchors.centerIn: parent
+                }
 
-            Text {
-                text: "Cancel"
-                color: closeButton.borderColor
-                font.pixelSize: parent.height * 0.6
-                anchors.centerIn: parent
+                onClicked: {
+                    if(name.acceptableInput && address.acceptableInput){
+                        console.log("OK")
+                        wrongInputText.visible = false;
+                        if(editClusterPopup.addingNew){
+                            editClusterPopup.clusterLogic.qmlAddCluster(name.text, address.text)
+                        }else {
+                            editClusterPopup.clusterModel.name = name.text
+                            editClusterPopup.clusterModel.address = address.text
+                            editClusterPopup.clusterModel.qmlSave();
+                        }
+
+                        editClusterPopup.close()
+                    }
+                    else {
+                        wrongInputText.visible = true;
+                        console.log("nope")
+                    }
+                }
             }
-
-            anchors {
-                bottom: parent.bottom
-                bottomMargin: parent.height * 0.075
-                right: parent.right
-                rightMargin: parent.width * 0.05
-            }
-            onClicked: editClusterPopup.close()
         }
     }
 }

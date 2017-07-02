@@ -13,6 +13,7 @@ Rectangle {
     border.color: borderColor
     border.width: 3
     radius: height * 0.25
+    opacity: enabled ? 1 : 0.3
 
     Behavior on color {
         ColorAnimation {

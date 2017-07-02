@@ -13,6 +13,7 @@ class ClusterLogic : public QObject
     Q_OBJECT
     LIST_PROPERTY(ClusterModel, models)
     LIST_PROPERTY(InstanceModel, instances)
+    AUTO_PROPERTY(ClusterModel*, editModel)
 
     AUTO_PROPERTY_D(bool, requestPending, false)
 
@@ -33,7 +34,10 @@ public slots:
 
 private:
     Q_SLOT void onRequestStarted();
-    void saveConfig();
+    Q_SLOT void saveConfig();
+    Q_SLOT void onDeleteNeeded(int index);
+
+    Q_SLOT void updateIndexes();
 
     ClusterModel* createModel(QString name, QString address);
 };

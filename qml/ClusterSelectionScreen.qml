@@ -38,22 +38,45 @@ ScreenItem {
 
         Repeater {
             model: clusterSelection.clusterLogic.models
-            delegate: ClickableRect {
+            delegate: Item {
+                id: clusterItem
                 property var clusterModel: modelData
-
                 width: clustersList.itemWidth
                 height: clustersList.itemHeight
 
+                ClickableRect {
+                    width: parent.width * 0.7
+                    height: parent.height
 
-                Text {
-                    anchors.centerIn: parent
-                    text: clusterModel.name
-                    font.pixelSize: parent.height * 0.5
-                    font.weight: Font.Bold
-                    color: "white"
+                    Text {
+                        anchors.centerIn: parent
+                        text: clusterItem.clusterModel.name
+                        font.pixelSize: parent.height * 0.5
+                        font.weight: Font.Bold
+                        color: "white"
+                    }
+
+                    onClicked: clusterModel.qmlConnectToCluster(clusterItem.clusterModel.address)
                 }
 
-                onClicked: clusterModel.qmlConnectToCluster(clusterModel.address)
+                ClickableRect {
+                    width: parent.width * 0.25
+                    height: parent.height
+                    anchors.right: parent.right
+
+                    Text {
+                        anchors.centerIn: parent
+                        text: "Edit"
+                        font.weight: Font.Black
+                        color: "white"
+                        font.pixelSize: parent.height * 0.4
+                    }
+                    onClicked: {
+                        editClusterPopup.clusterModel = clusterItem.clusterModel
+                        editClusterPopup.addingNew = false;
+                        editClusterPopup.open()
+                    }
+                }
             }
         }
     }
@@ -76,7 +99,11 @@ ScreenItem {
             font.weight: Font.Bold
             color: "#AFA"
         }
-        onClicked: editClusterPopup.open();
+        onClicked: {
+            editClusterPopup.clusterModel = clusterSelection.clusterLogic.editModel;
+            editClusterPopup.addingNew = true;
+            editClusterPopup.open();
+        }
 
     }
 
@@ -119,5 +146,6 @@ ScreenItem {
     EditClusterPopup {
         id: editClusterPopup
         clusterLogic: clusterSelection.clusterLogic
+        clusterModel: clusterSelection.clusterLogic.editModel
     }
 }

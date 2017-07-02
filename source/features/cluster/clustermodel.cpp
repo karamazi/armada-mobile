@@ -17,3 +17,13 @@ void ClusterModel::qmlConnectToCluster(QString address)
 {
     emit clusterInstancesListRequested(address);
 }
+
+void ClusterModel::qmlSave()
+{
+    emit saveNeeded();
+}
+
+void ClusterModel::qmlDelete()
+{
+    emit deleteNeeeded(mIndex);
+}
