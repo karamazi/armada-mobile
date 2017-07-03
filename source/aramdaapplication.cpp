@@ -4,6 +4,7 @@
 ArmadaApplication::ArmadaApplication(int& argc, char** argv)
     : QGuiApplication(argc, argv)
 {
+    qDebug() << "App initializing";
     mQmlEngine = new QQmlApplicationEngine;
     mRootLogic = new RootLogic;
     mClusterConnection = new ClusterConnection;
@@ -14,6 +15,7 @@ ArmadaApplication::ArmadaApplication(int& argc, char** argv)
 
     mQmlEngine->rootContext()->setContextProperty("_root_logic", mRootLogic);
     mQmlEngine->load(QUrl(QLatin1String("qrc:/qml/main.qml")));
+    qDebug() << "App started";
 }
 
 ArmadaApplication::~ArmadaApplication()
